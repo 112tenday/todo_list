@@ -8,19 +8,18 @@ import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
 
+@Entity
 @Getter
 @Setter
-@Entity
 public class ChecklistItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String itemName;
-
-    private boolean completed;
+    private String name;
+    private String status;
 
     @ManyToOne
-    private Checklist checklist;
+    private Checklist checklist; // Relasi ke checklist
 }

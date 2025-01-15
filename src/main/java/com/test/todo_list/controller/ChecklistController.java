@@ -1,6 +1,8 @@
 package com.test.todo_list.controller;
 
-import org.springframework.http.ResponseEntity;
+import com.test.todo_list.model.Checklist;
+import com.test.todo_list.service.ChecklistService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -9,28 +11,23 @@ import java.util.List;
 @RequestMapping("/checklist")
 public class ChecklistController {
 
+    @Autowired
+    private ChecklistService checklistService;
+
     @GetMapping
-    public ResponseEntity<List<String>> getAllChecklists() {
-        // Logika untuk mendapatkan semua checklist
-        return ResponseEntity.ok(List.of("Checklist 1", "Checklist 2"));
+    public List<Checklist> getAllChecklists(@RequestHeader("Authorization") String token) {
+        return checklistService.getAllChecklists();
     }
 
     @PostMapping
-    public ResponseEntity<String> createNewChecklist(@RequestBody ChecklistRequest checklistRequest) {
-        // Logika untuk membuat checklist baru
-        return ResponseEntity.ok("Checklist created");
+    public String createChecklist(@RequestHeader("Authorization") String token, @RequestBody Checklist checklist) {
+        checklistService.createChecklist(checklist);
+        return "Checklist created successfully!";
     }
 
     @DeleteMapping("/{checklistId}")
-    public ResponseEntity<String> deleteChecklistById(@PathVariable int checklistId) {
-        // Logika untuk menghapus checklist berdasarkan ID
-        return ResponseEntity.ok("Checklist deleted");
+    public String deleteChecklist(@RequestHeader("Authorization") String token, @PathVariable Long checklistId) {
+        checklistService.deleteChecklist(checklistId);
+        return "Checklist deleted successfully!";
     }
 }
-
-class ChecklistRequest {
-    private String name;
-
-    // Getters and Setters
-}
-
