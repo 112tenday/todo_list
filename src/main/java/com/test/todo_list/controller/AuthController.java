@@ -1,39 +1,27 @@
 package com.test.todo_list.controller;
 
+import com.test.todo_list.model.User;
+import com.test.todo_list.service.AuthService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/auth")
 public class AuthController {
 
+    @Autowired
+    private AuthService authService;
+
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
-        // Logika login di sini, misalnya verifikasi username dan password
-        return ResponseEntity.ok("Login Successful");
+    public ResponseEntity<?> login(@RequestBody User user) {
+        String token = authService.login(user);
+        return ResponseEntity.ok(token);
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegisterRequest registerRequest) {
-        // Logika registrasi di sini, misalnya menyimpan pengguna baru
-        return ResponseEntity.ok("Registration Successful");
+    public ResponseEntity<String> register(@RequestBody User user) {
+        authService.register(user);
+        return ResponseEntity.ok("User registered successfully");
     }
 }
-
-class LoginRequest {
-    private String username;
-    private String password;
-
-    // Getters and Setters
-}
-
-class RegisterRequest {
-    private String username;
-    private String email;
-    private String password;
-
-    // Getters and Setters
-}
-
-
